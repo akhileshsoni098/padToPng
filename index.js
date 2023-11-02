@@ -113,8 +113,8 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-const { exec } = require("child_process");
-
+// const { exec } = require("child_process");
+/* 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, "uploads");
@@ -123,14 +123,14 @@ const storage = multer.diskStorage({
         cb(null, Date.now() + path.extname(file.originalname));
     },
 });
-
-const upload = multer({ storage: storage }).single('pdfFile');
+ */
+// const upload = multer({ storage: storage }).single('pdfFile');
 
 app.get("/", async (req, res) => {
     const indexPath = path.join(__dirname, 'index.html');
     res.sendFile(indexPath);
 });
-
+/* 
 app.post('/convert', (req, res) => {
     upload(req, res, (err) => {
         if (err) {
@@ -170,7 +170,7 @@ app.post('/convert', (req, res) => {
         }
     });
 });
-
+ */
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
