@@ -1,0 +1,20 @@
+services:
+- name: web
+  env: node
+  buildCommand: npm install
+  startCommand: npm start
+  automaticBuild: true
+  httpPort: 3000
+  healthCheckPath: /healthcheck
+  skipCleanup: false
+
+database: null
+
+addons:
+- name: image-magick
+  env: ubuntu
+  setup: apt-get update && apt-get install -y imagemagick
+
+routes:
+- path: /*
+  service: web
