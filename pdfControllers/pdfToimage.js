@@ -1,0 +1,122 @@
+
+
+const admzip = require('adm-zip');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+
+const { exec } = require('child_process');
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const uploadsDir = path.join(__dirname, '../uploads');
+    if (!fs.existsSync(uploadsDir)) {
+      fs.mkdirSync(uploadsDir);
+    }
+    cb(null, 'uploads');
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
+
+const upload = multer({ storage: storage }).single('pdfFile');
+
+exports.pdfToImage =  (req, res) => {
+  upload(req, res, (err) => {
+    if (err) {
+      console.log(err);
+      res.status(500).json({ error: 'File upload failed' });
+    } else {
+      console.log(req.file.path);
+      const outputfile = path.join(__dirname, 'output.zip');
+      const outputzip = new admzip();
+
+      exec(`magick convert ${req.file.path} -quality 100 output-%3d.jpg`, (err, stdout, stderr) => {
+        if (err) {
+          console.log(err);
+
+          res.status(500).json({ error: 'PDF to image conversion failed' });
+
+        } else {
+
+          const filesDir = path.join(__dirname, '../');
+
+          const jpgFiles = fs.readdirSync(filesDir).filter((el) => el.startsWith('output-') && path.extname(el) === '.jpg');
+
+          jpgFiles.forEach((file) => {
+            outputzip.addLocalFile(path.join(filesDir, file));
+          });
+
+          outputzip.writeZip(outputfile);
+
+          // Send the zip file as a response for download
+
+          res.download(outputfile, outputfile, (err) => {
+            if (err) {
+              console.log(err);
+              res.status(500).json({ error: 'Download failed' });
+            }
+
+            fs.unlinkSync(outputfile);
+            // fs.unlinkSync.("../uploads"); 
+          });
+
+          console.log('Conversion completed');
+        }
+      });
+    }
+  });
+};
+ 
+/* 
+const admzip = require('adm-zip');
+const multer = require('multer');
+const path = require('path');
+const { exec } = require('child_process');
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage }).single('pdfFile');
+console.log(upload)
+exports.pdfToImage = (req, res) => {
+
+  console.log("upload")
+
+  upload(req, res, (err) => {
+    if (err) {
+      console.log(err);
+      res.status(500).json({ error: 'File upload failed' });
+    } else {
+      exec(`magick convert -quality 100 - output-%3d.jpg`, { input: req.file.buffer }, (err, stdout, stderr) => {
+        if (err) {
+          console.log(err);
+          res.status(500).json({ error: 'PDF to image conversion failed' });
+        } else {
+          const outputzip = new admzip();
+          const totalPages = 10; // Replace this with the actual total number of pages
+
+          console.log("here1")
+
+
+          for (let i = 1; i <= totalPages; i++) {
+            const fileName = `output-${i}.jpg`;
+            // Generate or add images directly to the zip without storing them in the filesystem
+            // Replace `Buffer.from(data)` with the actual image data for each page
+            outputzip.addFile(fileName, Buffer.from('Image data for page ' + i));
+          }
+          console.log("here2")
+
+          const zipBuffer = outputzip.toBuffer();
+          res.set('Content-Type', 'application/zip');
+          res.set('Content-Disposition', 'attachment; filename=images.zip');
+          res.set('Content-Length', zipBuffer.length);
+          res.end(zipBuffer, 'binary');
+console.log("here3")
+          // Clean up: Remove the uploaded file from memory after sending the zip file
+          URL.revokeObjectURL(req.file.buffer);
+        }
+      });
+    }
+  });
+};
+  */
