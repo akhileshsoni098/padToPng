@@ -1,9 +1,8 @@
-# Example render.yaml
+# render.yaml
 build:
   - name: Install ImageMagick
     script: |
       apt-get update
       apt-get install -y imagemagick
-  - name: Install Dependencies
-    script: |
-      npm install
+      # Debug: Print the PATH
+      echo "PATH: $PATH"
