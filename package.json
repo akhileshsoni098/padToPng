@@ -4,11 +4,11 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon server.js",
     "build": "apt-get update && apt-get install -y imagemagick",
+    "dev": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  
+
   "author": "",
   "license": "ISC",
   "dependencies": {
