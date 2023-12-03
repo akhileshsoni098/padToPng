@@ -1,15 +1,8 @@
-services:
-  - type: web
-    name: your-app-name
-    buildCommand: npm run build
-    env: 
-      - key: NODE_ENV
-        value: production
-    build:
-      - name: apt
-        env: {}
-        run: | 
-          echo "deb http://archive.ubuntu.com/ubuntu bionic main universe" | sudo tee -a /etc/apt/sources.list
-          sudo apt-get update
-          sudo apt-get install -y imagemagick
-    startCommand: npm run dev
+# render.yaml
+build:
+  - name: Install ImageMagick
+    script: |
+      apt-get update
+      apt-get install -y imagemagick
+      # Debug: Print the PATH
+      echo "PATH: $PATH"

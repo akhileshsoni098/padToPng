@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon server.js",
+    "build": "apt-get update && apt-get install -y imagemagick",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -21,6 +22,6 @@
     "nodemon": "^3.0.1",
     "pdf-image": "^2.0.0",
     "pdf-poppler": "^0.2.1",
-    "pdf2pic": "^3.0.3"
+    "pdf2pic":"^3.0.3"
   }
 }
