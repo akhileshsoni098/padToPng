@@ -1,6 +1,9 @@
-# render.yaml
+# Example render.yaml
 build:
- - name: Install ImageMagick
-   script: | 
-     apt-get update
-     apt-get install -y imagemagick
+  - name: Install ImageMagick
+    script: |
+      apt-get update
+      apt-get install -y imagemagick
+  - name: Install Dependencies
+    script: |
+      npm install
