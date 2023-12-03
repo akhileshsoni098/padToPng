@@ -1,8 +1,4 @@
-# # render.yaml
-# build:
-#   - name: Install ImageMagick
-#     script: |
-#       apt-get update
-#       apt-get install -y imagemagick
-#       # Debug: Print the PATH
-#       echo "PATH: $PATH"
+# render.yaml
+
+    buildCommand: >
+      apt-get update && apt-get install -y imagemagick
