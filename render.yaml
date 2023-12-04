@@ -1,8 +1,2 @@
-# render.yaml
-build:me
-  - name: Install ImageMagick
-    script: |
-      apt-get update
-      apt-get install -y imagemagick
-      # Debug: Print the PATH
-      echo "PATH: $PATH"
+buildCommand: docker build -t dockerfile .
+startCommand: docker run -p 8080:80 your-image-name
