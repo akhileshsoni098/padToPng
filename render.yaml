@@ -1,2 +1,2 @@
 buildCommand: docker build -t dockerfile .
-startCommand: docker run -p 8080:80 your-image-name
+startCommand: docker run -p 8080:80 dockerfile
