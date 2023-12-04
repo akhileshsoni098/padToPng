@@ -1,5 +1,5 @@
 # render.yaml
-build:
+build:me
   - name: Install ImageMagick
     script: |
       apt-get update
