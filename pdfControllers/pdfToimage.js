@@ -32,7 +32,10 @@ exports.pdfToImage =  (req, res) => {
       const outputfile = path.join(__dirname, 'output.zip');
       const outputzip = new admzip();
 
-      exec(`magick convert ${req.file.path} -quality 100 output-%3d.jpg`, (err, stdout, stderr) => {
+      // exec(`magick convert ${req.file.path} -quality 100 output-%3d.jpg`, (err, stdout, stderr) => { 
+
+            exec(`"C:\\Program Files\\ImageMagick-7.1.1-Q16-HDRI\\magick" convert ${req.file.path} -quality 100 output-%3d.jpg`, (err, stdout, stderr) => {
+
         if (err) {
           console.log(err);
 
